@@ -47,7 +47,7 @@ public class CategoriaRestController {
 
 	}
 	
-	@PostMapping("/categoria")
+	@PostMapping("/categorias")
 	public ResponseEntity<CategoriaResponseRest> save(@RequestBody Categoria categoria) {
 
 		ResponseEntity<CategoriaResponseRest> response = servicio.save(categoria);
