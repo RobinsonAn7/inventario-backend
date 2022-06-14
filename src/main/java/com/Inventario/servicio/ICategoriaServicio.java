@@ -10,5 +10,6 @@ public interface ICategoriaServicio {
 	public ResponseEntity<CategoriaResponseRest> search();
 	public ResponseEntity<CategoriaResponseRest> searchById(Long id);
 	public ResponseEntity<CategoriaResponseRest> save(Categoria categoria);
+	public ResponseEntity<CategoriaResponseRest> update(Categoria categoria, Long id);
 
 }
