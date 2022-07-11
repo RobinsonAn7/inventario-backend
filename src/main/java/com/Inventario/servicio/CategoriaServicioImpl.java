@@ -57,7 +57,7 @@ public class CategoriaServicioImpl implements ICategoriaServicio {
 
 				list.add(categoria.get());
 				response.getCategoriaResponse().setCategoria(list);
-				response.setMetadata("Respuesta OK", "-1", "Categoria encontrada");
+				response.setMetadata("Respuesta OK", "00", "Categoria encontrada");
 			} else {
 
 				response.setMetadata("Respuesta NO OK", "-1", "Categoria no encontrada");
