@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,6 +70,12 @@ public class ProductoRestController {
 	@GetMapping("/productos/filter/{nombre}")
 	public ResponseEntity<ProductoResponseRest>searchByNombre(@PathVariable String nombre){
 		 ResponseEntity<ProductoResponseRest> response = productoServicio.searchByNombre(nombre);
+		return response;
+	}
+	
+	@DeleteMapping("/productos/{id}")
+	public ResponseEntity<ProductoResponseRest>deleteByNombre(@PathVariable Long id){
+		 ResponseEntity<ProductoResponseRest> response = productoServicio.deleteById(id);
 		return response;
 	}
 }
