@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,7 +33,7 @@ public class ProductoRestController {
 
 
 	/*
-	 * 
+	 * endpoint save products
 	 */
 	@PostMapping("productos")
 	public ResponseEntity<ProductoResponseRest>save(
@@ -49,6 +51,15 @@ public class ProductoRestController {
 		System.out.println(Util.compressZLib(picture.getBytes()));
 		
 		ResponseEntity<ProductoResponseRest> response = productoServicio.save(producto, categoriaId);
+		return response;
+	}
+	
+	/*
+	 * endpoint search by id
+	 */
+	@GetMapping("/productos/{id}")
+	public ResponseEntity<ProductoResponseRest>searchById(@PathVariable Long id){
+		 ResponseEntity<ProductoResponseRest> response = productoServicio.searchById(id);
 		return response;
 	}
 }
