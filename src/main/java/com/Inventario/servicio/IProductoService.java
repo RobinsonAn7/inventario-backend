@@ -12,4 +12,5 @@ public interface IProductoService {
 	public ResponseEntity<ProductoResponseRest> searchByNombre(String nombre);
 	public ResponseEntity<ProductoResponseRest> deleteById(Long id);
 	public ResponseEntity<ProductoResponseRest> search();
+	public ResponseEntity<ProductoResponseRest> update(Producto producto, Long categoryId, Long id);
 }

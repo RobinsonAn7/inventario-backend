@@ -99,9 +99,9 @@ public class ProductoServicioImpl implements IProductoService {
 	}
 
 	@Override
-	@Transactional (readOnly = true)
+	@Transactional(readOnly = true)
 	public ResponseEntity<ProductoResponseRest> searchByNombre(String nombre) {
-		
+
 		ProductoResponseRest response = new ProductoResponseRest();
 
 		List<Producto> list = new ArrayList<>();
@@ -111,9 +111,9 @@ public class ProductoServicioImpl implements IProductoService {
 			listAux = productoDao.findByNombreContainingIgnoreCase(nombre);
 
 			if (listAux.size() > 0) {
-				
+
 				listAux.stream().forEach((p) -> {
-					
+
 					byte[] imagesDescompressed = Util.decompressZLib(p.getPicture());
 					p.setPicture(imagesDescompressed);
 					list.add(p);
@@ -143,9 +143,8 @@ public class ProductoServicioImpl implements IProductoService {
 
 		try {
 			// delete products by id
-			 productoDao.deleteById(id);
-			 response.setMetadata("Respuesta ok", "00", "Producto Eliminado");
-
+			productoDao.deleteById(id);
+			response.setMetadata("Respuesta ok", "00", "Producto Eliminado");
 
 		} catch (Exception e) {
 
@@ -157,7 +156,7 @@ public class ProductoServicioImpl implements IProductoService {
 	}
 
 	@Override
-	@Transactional (readOnly = true)
+	@Transactional(readOnly = true)
 	public ResponseEntity<ProductoResponseRest> search() {
 		ProductoResponseRest response = new ProductoResponseRest();
 
@@ -168,9 +167,9 @@ public class ProductoServicioImpl implements IProductoService {
 			listAux = (List<Producto>) productoDao.findAll();
 
 			if (listAux.size() > 0) {
-				
+
 				listAux.stream().forEach((p) -> {
-					
+
 					byte[] imagesDescompressed = Util.decompressZLib(p.getPicture());
 					p.setPicture(imagesDescompressed);
 					list.add(p);
@@ -188,6 +187,61 @@ public class ProductoServicioImpl implements IProductoService {
 
 			e.getStackTrace();
 			response.setMetadata("respuesta nok", "-1", "Error al buscar productos");
+			return new ResponseEntity<ProductoResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<ProductoResponseRest>(response, HttpStatus.OK);
+	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<ProductoResponseRest> update(Producto producto, Long categoryId, Long id) {
+
+		ProductoResponseRest response = new ProductoResponseRest();
+		List<Producto> list = new ArrayList<>();
+		try {
+			// update category
+			Optional<Categoria> categoria = categoriaDao.findById(categoryId);
+
+			if (categoria.isPresent()) {
+				producto.setCategoria(categoria.get());
+
+			} else {
+				response.setMetadata("respuesta nok", "-1", "Categoria no encontrada");
+				return new ResponseEntity<ProductoResponseRest>(response, HttpStatus.NOT_FOUND);
+			}
+
+			// update the product
+			Optional<Producto> productoSearch = productoDao.findById(id);
+
+			if (productoSearch.isPresent()) {
+
+				// se actualizara el producto
+				productoSearch.get().setCantidad(producto.getCantidad());
+				productoSearch.get().setCategoria(producto.getCategoria());
+				productoSearch.get().setNombre(producto.getNombre());
+				productoSearch.get().setPicture(producto.getPicture());
+				productoSearch.get().setPrecio(producto.getPrecio());
+
+				// save the product in DB
+				Producto productoUpdate = productoDao.save(productoSearch.get());
+
+				if (productoUpdate != null) {
+					list.add(productoUpdate);
+					response.getProducto().setProducto(list);
+					response.setMetadata("respuesta ok", "00", "Producto Actualizado");
+				} else {
+
+					response.setMetadata("respuesta nok", "-1", "Producto no Actualizado");
+					return new ResponseEntity<ProductoResponseRest>(response, HttpStatus.BAD_REQUEST);
+				}
+
+			} else {
+				response.setMetadata("respuesta nok", "-1", "Producto no Actualizado");
+				return new ResponseEntity<ProductoResponseRest>(response, HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+			response.setMetadata("respuesta nok", "-1", "Error al Actualizar producto");
 			return new ResponseEntity<ProductoResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<ProductoResponseRest>(response, HttpStatus.OK);
