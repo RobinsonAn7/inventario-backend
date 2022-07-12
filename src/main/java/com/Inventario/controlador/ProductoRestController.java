@@ -73,6 +73,9 @@ public class ProductoRestController {
 		return response;
 	}
 	
+	/*
+	 * endpoint delete by id
+	 */
 	@DeleteMapping("/productos/{id}")
 	public ResponseEntity<ProductoResponseRest>deleteByNombre(@PathVariable Long id){
 		 ResponseEntity<ProductoResponseRest> response = productoServicio.deleteById(id);
