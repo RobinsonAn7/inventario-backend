@@ -62,4 +62,13 @@ public class ProductoRestController {
 		 ResponseEntity<ProductoResponseRest> response = productoServicio.searchById(id);
 		return response;
 	}
+	
+	/*
+	 * endpoint search by name
+	 */
+	@GetMapping("/productos/filter/{nombre}")
+	public ResponseEntity<ProductoResponseRest>searchByNombre(@PathVariable String nombre){
+		 ResponseEntity<ProductoResponseRest> response = productoServicio.searchByNombre(nombre);
+		return response;
+	}
 }
