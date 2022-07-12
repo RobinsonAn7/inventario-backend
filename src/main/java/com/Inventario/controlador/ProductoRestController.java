@@ -81,4 +81,10 @@ public class ProductoRestController {
 		 ResponseEntity<ProductoResponseRest> response = productoServicio.deleteById(id);
 		return response;
 	}
+	
+	@GetMapping("/productos")
+	public ResponseEntity<ProductoResponseRest>search(){
+		 ResponseEntity<ProductoResponseRest> response = productoServicio.search();
+		return response;
+	}
 }
